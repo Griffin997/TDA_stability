@@ -197,6 +197,40 @@ class Data:
         else:
             plt.show()
 
+    def plot_acr_official(self, error_bars: bool = True, save: bool = False, filename: str = None):
+        '''
+        Plots the average critical radius across all TIs
+        Used as the official figure for the poster
+
+        Parameters:
+            error_bars: whether to plot error bars
+            save: If True, will save the plot to a file
+                  Otherwise, will display the plot
+            filename: If save is True, will save the plot to this filename
+        '''
+        
+        title = f"Topological Data Analysis"
+        plt.xlabel("TI (ms)")
+        plt.ylabel("Average Critical Radius")
+        if error_bars:
+            plt.errorbar(self.TIs, self.acr_mean, yerr = self.acr_std, fmt = 'o', zorder = 1)
+        else: 
+            plt.plot(self.TIs, self.acr_mean, 'o', zorder = 1)
+        TI1star = np.log(2)*600
+        plt.rc('font', size = 13)
+        plt.axvline(x=TI1star, linewidth=1, label= r'TI1 null point: $\eta_1$', color='k')
+        xlim = plt.xlim()
+        ylim = plt.ylim()
+        plt.legend()
+        plt.title(title)
+        if save:
+            if filename == None:
+                filename = "acr(" + str(self.bin_size) + "," + str(self.thresh) + ");" + self.TItitle + ";" + str(self.n_iters) + ";" + str(self.sample_size) + ";" + str(self.SNR) + ".png"
+            plt.savefig(filename)
+            plt.close()
+        else:
+            plt.show()
+        
     def fit_poly(self, degrees: int, null: float = None):
         '''
         Fits a polynomial to the data and sets the minimum point to self.minSNR
@@ -255,35 +289,47 @@ class Data:
             self.save_acr()
 
 # example usage
-TIs = list(range(366, 466, 2))
+TIs = list(np.arange(385, 445.1, 0.5))
 #TIs = list(np.arange(405*10, 425.1*10, 1)/10)
 n_iters = 1000
 sample_size = 200
-os.chdir("Data/1000(366-466)")
+# os.chdir("Data/1000(366-466)")
 #os.chdir("Data/1000(405-425)")
-SNRs = list(range(1000, 50250, 250))
-#SNRs = list(range(4000, 20000, 500)) + list([22500, 27500, 32500, 37500, 42500, 47500]) + list([20000, 25000, 30000, 35000, 40000, 45000, 50000])
-dTIs = []
-fit_degrees = 4
-for SNR in SNRs:
-    data = Data(TIs, n_iters, sample_size, SNR)
-    try:
-        data.load_acr()
-    except:
-        print(SNR)
-        data.generate_all()
-        data.load_acr()
-    data.fit_poly(fit_degrees, 416)
-    #data.plot_acr(False, fit_degrees, True)
-    dTIs.append(data.dTI[416])
-log = False
-if log:
-    plt.scatter(np.log(SNRs), np.log(dTIs), 10)
-    plt.xlabel("log(SNR)")
-    plt.ylabel("log($\delta$)")
-else:
-    plt.scatter(SNRs, dTIs, 10)
-    plt.xlabel("SNR")
-    plt.ylabel("$\delta$")
-plt.title(f"Iterations = {n_iters}, Sample Size = {sample_size}, Bin Size = 0.01, Threshold = 1\nFit Degrees = {fit_degrees}")
-plt.show()
+# SNRs = list(range(1000, 50250, 250))
+# #SNRs = list(range(4000, 20000, 500)) + list([22500, 27500, 32500, 37500, 42500, 47500]) + list([20000, 25000, 30000, 35000, 40000, 45000, 50000])
+# dTIs = []
+# fit_degrees = 4
+# for SNR in SNRs:
+#     data = Data(TIs, n_iters, sample_size, SNR)
+#     try:
+#         data.load_acr()
+#     except:
+#         print(SNR)
+#         data.generate_all()
+#         data.load_acr()
+#     data.fit_poly(fit_degrees, 416)
+#     #data.plot_acr(False, fit_degrees, True)
+#     dTIs.append(data.dTI[416])
+# log = False
+# if log:
+#     plt.scatter(np.log(SNRs), np.log(dTIs), 10)
+#     plt.xlabel("log(SNR)")
+#     plt.ylabel("log($\delta$)")
+# else:
+#     plt.scatter(SNRs, dTIs, 10)
+#     plt.xlabel("SNR")
+#     plt.ylabel("$\delta$")
+# plt.title(f"Iterations = {n_iters}, Sample Size = {sample_size}, Bin Size = 0.01, Threshold = 1\nFit Degrees = {fit_degrees}")
+# plt.show()
+
+SNR = 1000
+data = Data(TIs, n_iters, sample_size, SNR)
+try:
+    data.load_acr()
+except:
+    print(SNR)
+    data.generate_all()
+    data.load_acr()
+    data.save_acr()
+data.plot_acr_official()
+

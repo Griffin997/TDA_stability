@@ -57,7 +57,7 @@ def run_metro(TI_np, n_iterations, r: float = 300, verbose: bool = False, flip: 
     T11 = 600
     T12 = 1200
     T21 = 45
-    T22 = 100
+    T22 = 200
     noise_sd = (c1+c2)/SNR
 
     def S_4_param(TE, d1, d2, T21, T22):
