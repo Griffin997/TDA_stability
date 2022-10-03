@@ -322,14 +322,41 @@ sample_size = 200
 # plt.title(f"Iterations = {n_iters}, Sample Size = {sample_size}, Bin Size = 0.01, Threshold = 1\nFit Degrees = {fit_degrees}")
 # plt.show()
 
-SNR = 1000
-data = Data(TIs, n_iters, sample_size, SNR)
-try:
-    data.load_acr()
-except:
-    print(SNR)
-    data.generate_all()
-    data.load_acr()
-    data.save_acr()
-data.plot_acr_official()
+##### Build Data Set and Figure
+# TIs = list(np.arange(385, 445.1, 0.5))
+# n_iters = 1000
+# sample_size = 200
+# SNR = 1000
+# data = Data(TIs, n_iters, sample_size, SNR)
+# try:
+#     data.load_acr()
+# except:
+#     print(SNR)
+#     data.generate_all()
+#     data.load_acr()
+#     data.save_acr()
+# data.plot_acr_official()
 
+#### Custom Figure:
+TIs = list([385, 415, 445])
+n_iters = 3000
+sample_size = 200
+SNR_trial = 1000
+TI_hold = []
+try:
+    for iTI in TIs:
+        TI_hold.append(run_metro_2(iTI, n_iters, verbose = False, SNR = SNR_trial))
+except:
+    print("Didn't work")
+print("Hold")
+
+plt.rc('font', size = 13)
+fig, ax = plt.subplots(1,3, figsize=(11,4), tight_layout=True)
+for i in range(np.size(TIs)):
+    ax[i].scatter(TI_hold[i][:,2],TI_hold[i][:,3], alpha = 0.7, marker = 'o')
+    ax[i].set_xlabel(r'$T_{2,1}$ (ms)')
+    ax[i].set_ylabel(r'$T_{2,2}$ (ms)')
+    ax[i].set_title(f"Example Point Cloud\nTI = {TIs[i]} ms")
+    ax[i].set_xlim([-10,300])
+    ax[i].set_ylim([-10,300])
+plt.show()
