@@ -339,7 +339,7 @@ sample_size = 200
 
 #### Custom Figure:
 TIs = list([385, 415, 445])
-n_iters = 3000
+n_iters = 10000
 sample_size = 200
 SNR_trial = 1000
 TI_hold = []
@@ -352,11 +352,12 @@ print("Hold")
 
 plt.rc('font', size = 13)
 fig, ax = plt.subplots(1,3, figsize=(11,4), tight_layout=True)
+fig.suptitle(f"Example {n_iters} Point Clouds")
 for i in range(np.size(TIs)):
-    ax[i].scatter(TI_hold[i][:,2],TI_hold[i][:,3], alpha = 0.7, marker = 'o')
+    ax[i].plot(TI_hold[i][:,2],TI_hold[i][:,3], alpha = 0.7, marker = 'o', lw = 0, markersize = 1)
     ax[i].set_xlabel(r'$T_{2,1}$ (ms)')
     ax[i].set_ylabel(r'$T_{2,2}$ (ms)')
-    ax[i].set_title(f"Example Point Cloud\nTI = {TIs[i]} ms")
-    ax[i].set_xlim([-10,300])
-    ax[i].set_ylim([-10,300])
+    ax[i].set_title(f"TI = {TIs[i]} ms")
+    ax[i].set_xlim([-10,400])
+    ax[i].set_ylim([-10,400])
 plt.show()
