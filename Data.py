@@ -7,6 +7,8 @@ from tqdm import trange
 from scipy import optimize
 import os
 
+file_base = "Stored_Data/Complete/"
+
 class Data:
     def __init__(self, TIs: list, n_iters: int, sample_size: int, SNR: float, nullpts: list = [416, 832]):
         # Data class includes methods for generating, saving, loading, and everything else
@@ -46,12 +48,12 @@ class Data:
 
     def save_data(self, filename: str = None):
         if filename == None:
-            filename = "data;" + self.TItitle + ";" + str(self.n_iters) + ";" + str(self.sample_size) + ";" + str(self.SNR) + ".npy"
+            filename = file_base + "data;" + self.TItitle + ";" + str(self.n_iters) + ";" + str(self.sample_size) + ";" + str(self.SNR) + ".npy"
         np.save(filename, self.data)
 
     def load_data(self, filename: str = None):
         if filename == None:
-            filename = "data;" + self.TItitle + ";" + str(self.n_iters) + ";" + str(self.sample_size) + ";" + str(self.SNR) + ".npy"
+            filename = file_base + "data;" + self.TItitle + ";" + str(self.n_iters) + ";" + str(self.sample_size) + ";" + str(self.SNR) + ".npy"
         self.data = np.load(filename, allow_pickle = True)
 
     def bin_data(self, bin_size: float = 0.01):
@@ -70,13 +72,13 @@ class Data:
 
     def save_binned(self, filename: str = None):
         if filename == None:
-            filename = "binned(" + str(self.bin_size) + ");" + self.TItitle + ";" + str(self.n_iters) + ";" + str(self.sample_size) + ";" + str(self.SNR) + ".npy"
+            filename = file_base + "binned(" + str(self.bin_size) + ");" + self.TItitle + ";" + str(self.n_iters) + ";" + str(self.sample_size) + ";" + str(self.SNR) + ".npy"
         np.save(filename, self.binned)
     
     def load_binned(self, filename: str = None, bin_size: float = 0.01):
         self.bin_size = bin_size
         if filename == None:
-            filename = "binned(" + str(self.bin_size) + ");" + self.TItitle + ";" + str(self.n_iters) + ";" + str(self.sample_size) + ";" + str(self.SNR) + ".npy"
+            filename = file_base + "binned(" + str(self.bin_size) + ");" + self.TItitle + ";" + str(self.n_iters) + ";" + str(self.sample_size) + ";" + str(self.SNR) + ".npy"
         self.binned = np.load(filename, allow_pickle = True)
 
     def thresh_bins(self, thresh: float = 1):
@@ -91,14 +93,14 @@ class Data:
 
     def save_threshed(self, filename: str = None):
         if filename == None:
-            filename = "threshed(" + str(self.bin_size) + "," + str(self.thresh) + ");" + self.TItitle + ";" + str(self.n_iters) + ";" + str(self.sample_size) + ";" + str(self.SNR) + ".npy"
+            filename = file_base + "threshed(" + str(self.bin_size) + "," + str(self.thresh) + ");" + self.TItitle + ";" + str(self.n_iters) + ";" + str(self.sample_size) + ";" + str(self.SNR) + ".npy"
         np.save(filename, self.threshed)
     
     def load_threshed(self, filename: str = None, bin_size: float = 0.01, thresh: float = 1):
         self.bin_size = bin_size
         self.thresh = thresh
         if filename == None:
-            filename = "threshed(" + str(self.bin_size) + "," + str(self.thresh) + ");" + self.TItitle + ";" + str(self.n_iters) + ";" + str(self.sample_size) + ";" + str(self.SNR) + ".npy"
+            filename = file_base + "threshed(" + str(self.bin_size) + "," + str(self.thresh) + ");" + self.TItitle + ";" + str(self.n_iters) + ";" + str(self.sample_size) + ";" + str(self.SNR) + ".npy"
         self.threshed = np.load(filename, allow_pickle = True)
 
     def rip_threshed(self):
@@ -113,7 +115,7 @@ class Data:
 
     def save_ripped(self, filename: str = None):
         if filename == None:
-            filename = "ripped(" + str(self.bin_size) + "," + str(self.thresh) + ");" + self.TItitle + ";" + str(self.n_iters) + ";" + str(self.sample_size) + ";" + str(self.SNR) + ".npy"
+            filename = file_base + "ripped(" + str(self.bin_size) + "," + str(self.thresh) + ");" + self.TItitle + ";" + str(self.n_iters) + ";" + str(self.sample_size) + ";" + str(self.SNR) + ".npy"
         np.save(filename, self.ripped)
     
     def load_ripped(self, filename: str = None, bin_size: float = 0.01, thresh: float = 1):
@@ -133,14 +135,14 @@ class Data:
 
     def save_acr(self, filename: str = None):
         if filename == None:
-            filename = "acr(" + str(self.bin_size) + "," + str(self.thresh) + ");" + self.TItitle + ";" + str(self.n_iters) + ";" + str(self.sample_size) + ";" + str(self.SNR) + ".npy"
+            filename = file_base + "acr(" + str(self.bin_size) + "," + str(self.thresh) + ");" + self.TItitle + ";" + str(self.n_iters) + ";" + str(self.sample_size) + ";" + str(self.SNR) + ".npy"
         np.save(filename, [self.acr_mean, self.acr_std])
 
     def load_acr(self, filename: str = None, bin_size: float = 0.01, thresh: float = 1):
         self.bin_size = bin_size
         self.thresh = thresh
         if filename == None:
-            filename = "acr(" + str(self.bin_size) + "," + str(self.thresh) + ");" + self.TItitle + ";" + str(self.n_iters) + ";" + str(self.sample_size) + ";" + str(self.SNR) + ".npy"
+            filename = file_base + "acr(" + str(self.bin_size) + "," + str(self.thresh) + ");" + self.TItitle + ";" + str(self.n_iters) + ";" + str(self.sample_size) + ";" + str(self.SNR) + ".npy"
         acr = np.load(filename, allow_pickle = True)
         self.acr_mean = acr[0]
         self.acr_std = acr[1]
@@ -218,7 +220,7 @@ class Data:
             plt.plot(self.TIs, self.acr_mean, 'o', zorder = 1)
         TI1star = np.log(2)*600
         plt.rc('font', size = 13)
-        plt.axvline(x=TI1star, linewidth=1, label= r'TI1 null point: $\eta_1$', color='k')
+        plt.axvline(x=TI1star, linewidth=1, label= r'TI_1* null point: $\eta_1$', color='k')
         xlim = plt.xlim()
         ylim = plt.ylim()
         plt.legend()
@@ -289,10 +291,10 @@ class Data:
             self.save_acr()
 
 # example usage
-TIs = list(np.arange(385, 445.1, 0.5))
+# TIs = list(np.arange(385, 445.1, 0.5))
 #TIs = list(np.arange(405*10, 425.1*10, 1)/10)
-n_iters = 1000
-sample_size = 200
+# n_iters = 1000
+# sample_size = 200
 # os.chdir("Data/1000(366-466)")
 #os.chdir("Data/1000(405-425)")
 # SNRs = list(range(1000, 50250, 250))
@@ -322,27 +324,56 @@ sample_size = 200
 # plt.title(f"Iterations = {n_iters}, Sample Size = {sample_size}, Bin Size = 0.01, Threshold = 1\nFit Degrees = {fit_degrees}")
 # plt.show()
 
+TI1star = np.log(2)*600
+TI2star = np.log(2)*1200
+rad = 35
+
+#Information determing TI range
+genResolution = 10 #30
+nullResolution = 2
+nullRadius = 10  #20
+
 ##### Build Data Set and Figure
-# TIs = list(np.arange(385, 445.1, 0.5))
-# n_iters = 1000
-# sample_size = 200
-# SNR = 1000
-# data = Data(TIs, n_iters, sample_size, SNR)
-# try:
-#     data.load_acr()
-# except:
-#     print(SNR)
-#     data.generate_all()
-#     data.load_acr()
-#     data.save_acr()
+TI_lowBound = TI1star*2//3
+TI_highBound = TI2star*4//3
+
+standard_array = np.arange(-nullRadius,nullRadius+0.01,nullResolution)
+TI1_array = np.floor(TI1star) + standard_array
+TI2_array = np.floor(TI2star) + standard_array
+
+gen_array = np.arange(TI_lowBound, TI_highBound, genResolution)
+TI_array = np.concatenate((gen_array, TI1_array, TI2_array))
+TI_array = np.unique(TI_array)
+
+TI_array.sort()
+TIs = list(TI_array)
+n_iters = 5000
+sample_size = 100
+SNR = 3000
+data_all = Data(TIs, n_iters, sample_size, SNR)
+# data_TI1star = Data(list(TI1_array), n_iters, sample_size, SNR)
+# data_TI2star = Data(list(TI2_array), n_iters, sample_size, SNR)
+try:
+    data_all.load_acr()
+    # data_TI1star.load_acr()
+    # data_TI2star.load_acr()
+except:
+    print(SNR)
+    data_all.generate_all()
+    # data_TI1star.generate_all()
+    # data_TI2star.generate_all()
+    # data.load_acr()
+    # data.save_acr()
 # data.plot_acr_official()
 
 #### Custom Figure:
-TIs = list([385, 415, 445])
+TIs = list([375, 415, 455])
 n_iters = 10000
 sample_size = 200
-SNR_trial = 1000
+SNR_trial = 3000
 TI_hold = []
+ref_string = ['Below', 'Near', 'Above']
+TIstar_text = r'$TI_1^*$'
 try:
     for iTI in TIs:
         TI_hold.append(run_metro_2(iTI, n_iters, verbose = False, SNR = SNR_trial))
@@ -357,7 +388,65 @@ for i in range(np.size(TIs)):
     ax[i].plot(TI_hold[i][:,2],TI_hold[i][:,3], alpha = 0.7, marker = 'o', lw = 0, markersize = 1)
     ax[i].set_xlabel(r'$T_{2,1}$ (ms)')
     ax[i].set_ylabel(r'$T_{2,2}$ (ms)')
-    ax[i].set_title(f"TI = {TIs[i]} ms")
-    ax[i].set_xlim([-10,400])
-    ax[i].set_ylim([-10,400])
+    ax[i].set_title(f"{ref_string[i]} {TIstar_text}: TI = {TIs[i]} ms")
+    ax[i].set_xlim([-10,200])
+    ax[i].set_ylim([-10,200])
 plt.show()
+
+
+
+# fig, ax = plt.subplots(2,2,figsize=(12,9), tight_layout=True)
+# # fig.suptitle('Null Point Neighbhorhood Bayes Information Criterion')
+
+# plt.rc('font', size = 16)
+
+# ax[0,1].set_xlabel("TI (ms)", fontsize=14)
+# ax[0,1].set_ylabel("Average Critical Radius", fontsize=14)
+# ax[0,1].errorbar(data_all.TIs, data_all.acr_mean, yerr = data_all.acr_std, fmt = 'o', zorder = 1, markersize = 2)
+# ax[0,1].axvline(x=TI1star, linewidth=1, label= r'$TI_1^*$', color='k', ls = '--')
+# ax[0,1].axvline(x=TI2star, linewidth=1, label= r'$TI_2^*$', color='k', ls = '-.')
+# ax[0,1].set_title("Comprehensive TI Domain")
+
+# handler, labeler = ax[0,1].get_legend_handles_labels()
+
+# ax[1,0].errorbar(data_all.TIs, data_all.acr_mean, yerr = data_all.acr_std, fmt = 'o', zorder = 1, markersize = 2)
+# ax[1,0].set_title(r'$TI^*_1$ Null Point Neighborhood')
+# ax[1,0].axvline(x=TI1star, label= r'$TI^*_1$', color='k', ls = '--', lw = 1.5)
+# ax[1,0].set_xlabel('TI (ms)', fontsize=14)
+# ax[1,0].set_ylabel('Average Critical Radius', fontsize=14)
+# ax[1,0].set_xlim([TI1star-2*rad, TI1star+2*rad])
+
+# ax[1,1].errorbar(data_all.TIs, data_all.acr_mean, yerr = data_all.acr_std, fmt = 'o', zorder = 1, markersize = 2)
+# ax[1,1].set_title(r'$TI^*_2$ Null Point Neighborhood')
+# ax[1,1].axvline(x=TI2star, label= r'$TI^*_2$', color='k', ls = '-.', lw = 1.5)
+# ax[1,1].set_xlabel('TI (ms)', fontsize=14)
+# ax[1,1].set_ylabel('Average Critical Radius', fontsize=14)
+# ax[1,1].set_xlim([TI2star-2*rad, TI2star+2*rad])
+
+# hd = [handler]
+# lab = [labeler]
+
+# ax[0,0].axis('off')
+# ax[0,0].legend(handler, labeler, bbox_to_anchor = [0.6,0.5])
+# ax[0,0].set_title('Null Point Identification with\nTopological Data Analysis', y=0.8, pad=-15)
+# plt.show()
+
+
+# fig, ax = plt.subplots(1,1,figsize=(6,5), tight_layout=True)
+# # fig.suptitle('Null Point Neighbhorhood Bayes Information Criterion')
+
+# plt.rc('font', size = 16)
+
+# ax.errorbar(data_all.TIs, data_all.acr_mean, yerr = data_all.acr_std, fmt = 'o', zorder = 1, markersize = 2)
+# ax.set_xlabel("TI (ms)", fontsize=14)
+# ax.set_ylabel("Average Critical Radius", fontsize=14)
+# ax.axvline(x=TI1star, linewidth=1, label= r'$TI_1^*$', color='k', ls = '--')
+# ax.axvline(x=TI2star, linewidth=1, label= r'$TI_2^*$', color='k', ls = '-.')
+# # ax.set_title("Comprehensive TI Domain")
+# handler, labeler = ax.get_legend_handles_labels()
+# hd = [handler]
+# lab = [labeler]
+
+# # ax.axis('off')
+# ax.legend(handler, labeler, bbox_to_anchor = [0.6,0.5])
+# plt.show()

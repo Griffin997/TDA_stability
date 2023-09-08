@@ -52,12 +52,12 @@ def run_metro(TI_np, n_iterations, r: float = 300, verbose: bool = False, flip: 
     TE_set = np.linspace(TE_max/n_TE, TE_max, n_TE)
     #Define true values of the 6 parameters
     #For future usage, these parameters may be made into function parameters
-    c1 = 0.5
-    c2 = 0.5
+    c1 = 0.4
+    c2 = 0.6
     T11 = 600
     T12 = 1200
     T21 = 45
-    T22 = 200
+    T22 = 100
     noise_sd = (c1+c2)/SNR
 
     def S_4_param(TE, d1, d2, T21, T22):
