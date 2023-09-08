@@ -6,6 +6,8 @@ Metropolis.py contains Ryan's Metropolis code with some modifications.\
 Helpers.py contains helper functions for Data.py.\
 Plotters.py plots 2D point clouds as well as persistence barcodes and diagrams for any dimension.
 
+These results have been adjusted for by Griffin Hampton into my own repository to build on Tyler's results.
+
 The GEMS_Report pdf provides a detailed explanation of this research.
 
 Links to generated data:\
